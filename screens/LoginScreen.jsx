@@ -1,27 +1,30 @@
 import React, { useState } from "react";
 import { View } from "react-native";
-import { Button, Caption, TextInput } from "react-native-paper";
-import { Form } from "../components/Form";
+import { Button, Subheading, TextInput } from "react-native-paper";
+import useAuth from "../hooks/useAuth";
 
 export default () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const { setLoginToken, loading } = useAuth();
 
   return (
-    <Form
-      header="Login"
-      subheader="Welcome, enter your login details to continue"
+    <View
+      style={{
+        paddingTop: 28,
+        paddingHorizontal: 20,
+      }}
     >
       <TextInput
         label="Username"
         value={username}
-        onChangeText={(text) => setUsername(text)}
+        onChangeText={setUsername}
         style={{ marginBottom: 28 }}
       />
       <TextInput
         label="Password"
         value={password}
-        onChangeText={(text) => setPassword(text)}
+        onChangeText={setPassword}
         secureTextEntry
         style={{ marginBottom: 28 }}
       />
@@ -33,17 +36,18 @@ export default () => {
         }}
       >
         {/* TODO make link that navigates to forgot password screen */}
-        <Caption>Forgot password</Caption>
+        <Subheading>Forgot password</Subheading>
       </View>
       <Button
         mode="contained"
-        onPress={() => {
-          console.log(`Logging in as ${username}`);
-          // TODO navigate to homepage
+        onPress={async () => {
+          console.log("loading", loading);
+          await setLoginToken("some-token-from-server", username);
         }}
       >
-        Login
+        {/* {loading ? "Logging in..." : "Log in"} */}
+        Log in
       </Button>
-    </Form>
+    </View>
   );
 };
