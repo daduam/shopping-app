@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View } from "react-native";
 import { Button, Subheading, TextInput } from "react-native-paper";
-import useAuth from "../hooks/useAuth";
+import AuthContext from "../contexts/AuthContext";
 
 export default () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { setLoginToken, loading } = useAuth();
+
+  const { setAuthUser } = useContext(AuthContext);
 
   return (
     <View
@@ -41,8 +42,7 @@ export default () => {
       <Button
         mode="contained"
         onPress={async () => {
-          console.log("loading", loading);
-          await setLoginToken("some-token-from-server", username);
+          setAuthUser(username);
         }}
       >
         {/* {loading ? "Logging in..." : "Log in"} */}

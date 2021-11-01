@@ -1,19 +1,26 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import React, { Fragment } from "react";
+import React, { Fragment, useMemo, useState } from "react";
 import { Provider as PaperProvider } from "react-native-paper";
 import Header from "./components/Header";
-import useAuth, { AuthProvider } from "./hooks/useAuth";
+import AuthContext from "./contexts/AuthContext";
 import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const { authData } = useAuth();
+  const [authUser, setAuthUser] = useState("");
+
+  const authContext = useMemo(() => {
+    return {
+      authUser,
+      setAuthUser,
+    };
+  }, [authUser, setAuthUser]);
 
   return (
-    <AuthProvider>
+    <AuthContext.Provider value={authContext}>
       <PaperProvider>
         <NavigationContainer>
           <Stack.Navigator
@@ -21,7 +28,7 @@ export default function App() {
               header: (props) => <Header {...props} />,
             }}
           >
-            {authData?.token ? (
+            {authUser ? (
               <Fragment>
                 <Stack.Screen name="home" component={HomeScreen} />
               </Fragment>
@@ -37,6 +44,6 @@ export default function App() {
           </Stack.Navigator>
         </NavigationContainer>
       </PaperProvider>
-    </AuthProvider>
+    </AuthContext.Provider>
   );
 }
