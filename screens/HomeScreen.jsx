@@ -1,9 +1,21 @@
 import React from "react";
-import { View } from "react-native";
+import { FlatList, View } from "react-native";
 import { Text } from "react-native-paper";
+import { getProducts } from "../db/products";
 
-export default () => (
-  <View>
-    <Text>home screen</Text>
-  </View>
-);
+export default () => {
+  const products = getProducts();
+
+  return (
+    <View style={{ flex: 1 }}>
+      <FlatList
+        data={products}
+        renderItem={({ item, index }) => (
+          <View key={index}>
+            <Text>{item.name}</Text>
+          </View>
+        )}
+      />
+    </View>
+  );
+};

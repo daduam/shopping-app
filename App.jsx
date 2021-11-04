@@ -19,10 +19,12 @@ export default function App() {
   useEffect(() => {
     async function prepareApp() {
       try {
-        const result = await SecureStorage.getItemAsync(key);
-        if (result) {
-          setAuthData(JSON.parse(result));
-        }
+        // SecureStore API not available for web
+        setAuthData({ token: "token", username: "username" });
+        // const result = await SecureStorage.getItemAsync(key);
+        // if (result) {
+        //   setAuthData(JSON.parse(result));
+        // }
       } catch (err) {
         console.error(err);
       } finally {
@@ -61,7 +63,11 @@ export default function App() {
           >
             {authData ? (
               <Fragment>
-                <Stack.Screen name="home" component={HomeScreen} />
+                <Stack.Screen
+                  name="home"
+                  component={HomeScreen}
+                  options={{ title: "Browse modern furniture" }}
+                />
               </Fragment>
             ) : (
               <Fragment>
