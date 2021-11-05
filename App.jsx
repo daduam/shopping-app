@@ -19,12 +19,10 @@ export default function App() {
   useEffect(() => {
     async function prepareApp() {
       try {
-        // SecureStore API not available for web
-        setAuthData({ token: "token", username: "username" });
-        // const result = await SecureStorage.getItemAsync(key);
-        // if (result) {
-        //   setAuthData(JSON.parse(result));
-        // }
+        const result = await SecureStorage.getItemAsync(key);
+        if (result) {
+          setAuthData(JSON.parse(result));
+        }
       } catch (err) {
         console.error(err);
       } finally {

@@ -1,6 +1,6 @@
 import React from "react";
 import { FlatList, View } from "react-native";
-import { Text } from "react-native-paper";
+import ProductCard from "../components/ProductCard";
 import { getProducts } from "../db/products";
 
 export default () => {
@@ -10,11 +10,9 @@ export default () => {
     <View style={{ flex: 1 }}>
       <FlatList
         data={products}
-        renderItem={({ item, index }) => (
-          <View key={index}>
-            <Text>{item.name}</Text>
-          </View>
-        )}
+        ItemSeparatorComponent={() => <View style={{ margin: 12 }} />}
+        renderItem={({ item }) => <ProductCard item={item} />}
+        keyExtractor={(item) => item.id}
       />
     </View>
   );
