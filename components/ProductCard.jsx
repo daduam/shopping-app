@@ -1,8 +1,11 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { View } from "react-native";
 import { Button, Card, Paragraph, Text, Title } from "react-native-paper";
 
 export default ({ item }) => {
+  const navigation = useNavigation();
+
   return (
     <Card>
       <Card.Cover source={{ uri: item.imgSrc }} />
@@ -24,7 +27,14 @@ export default ({ item }) => {
         </View>
         <Paragraph>{item.desc}</Paragraph>
         <Card.Actions>
-          <Button mode="outlined">Product Detail</Button>
+          <Button
+            mode="outlined"
+            onPress={() => {
+              navigation.navigate("product", { productId: item.id });
+            }}
+          >
+            Product Detail
+          </Button>
           <Button
             icon="cart"
             mode="contained"

@@ -10,6 +10,7 @@ import Header from "./components/Header";
 import AuthContext from "./contexts/AuthContext";
 import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
+import ProductScreen from "./screens/ProductScreen";
 
 const Stack = createNativeStackNavigator();
 const key = "AUTH_TOKEN";
@@ -74,6 +75,11 @@ export default function App() {
                   name="home"
                   component={HomeScreen}
                   options={{ title: "Browse modern furniture" }}
+                />
+                <Stack.Screen
+                  name="product"
+                  component={ProductScreen}
+                  options={{ title: "Product" }}
                 />
               </Fragment>
             ) : (
