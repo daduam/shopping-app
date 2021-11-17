@@ -1,8 +1,10 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AppLoading from "expo-app-loading";
 import * as SecureStorage from "expo-secure-store";
 import React, { Fragment, useEffect, useMemo, useState } from "react";
+import { Platform } from "react-native";
 import { Provider as PaperProvider } from "react-native-paper";
 import Header from "./components/Header";
 import AuthContext from "./contexts/AuthContext";
@@ -15,11 +17,14 @@ const key = "AUTH_TOKEN";
 export default function App() {
   const [isLoading, setLoadingComplete] = useState(false);
   const [authData, setAuthData] = useState(null);
+  const isWeb = Platform.OS === "web";
 
   useEffect(() => {
     async function prepareApp() {
       try {
-        const result = await SecureStorage.getItemAsync(key);
+        const result = isWeb
+          ? await AsyncStorage.getItem(key)
+          : await SecureStorage.getItemAsync(key);
         if (result) {
           setAuthData(JSON.parse(result));
         }
@@ -37,11 +42,15 @@ export default function App() {
     return {
       setLoginToken: async (token, username) => {
         const data = { token, username };
-        await SecureStorage.setItemAsync(key, JSON.stringify(data));
+        isWeb
+          ? await AsyncStorage.setItem(key, JSON.stringify(data))
+          : await SecureStorage.setItemAsync(key, JSON.stringify(data));
         setAuthData(data);
       },
       removeLoginToken: async () => {
-        await SecureStorage.deleteItemAsync(key);
+        isWeb
+          ? await AsyncStorage.removeItem(key)
+          : await SecureStorage.deleteItemAsync(key);
         setAuthData(undefined);
       },
     };
